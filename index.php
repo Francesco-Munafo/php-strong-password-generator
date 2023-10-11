@@ -1,45 +1,72 @@
 <?php
 
+/*
+1- Entriamo in index.php
+2- Inviamo i dati su index.php
+3- Generare password in base ai dati
+4- Reindirizzamento ad un'altra pagina
+5- Stampa della password sulla nuova pagina (Password.php)
+
+*/
+
+
 function generatePassword($length)
 {
-    $length = $_GET['passwordLength'];
     $repeat = $_GET['repeatCharacter'];
-    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $addLetters = $_GET['letters'];
+    $addNumbers = $_GET['numbers'];
+    $addSpecial = $_GET['special'];
+    $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $numbers = '0123456789';
-    $specials = '!£$%&/()=@#+';
+    $specials = '!$%&/()=@#+';
+    $availableCharacters = '';
     $generatedPassword = '';
+    
 
-    if (isset($length) && $repeat == '1') {
+    if ($addLetters){
+        $availableCharacters .= $letters;
+    }
+    if ($addNumbers){
+        $availableCharacters .= $numbers;
+    }
+    if ($addSpecial){
+        $availableCharacters .= $specials;
+    }
 
-        $generatedPassword = substr(str_shuffle($characters), 0, $length);
 
-    } elseif (isset($length)) {
 
-        for ($i = 0; $i < $length; $i++) {
-            $index = rand(0, strlen($characters) - 1);
-            $generatedPassword .= $characters[$index];
+
+
+
+
+    if (!empty($availableCharacters)) {
+
+        if ($repeat) {
+
+            for ($i = 0; $i < $length; $i++) {
+             $index = rand(0, strlen($availableCharacters) - 1);
+             $generatedPassword .= $availableCharacters[$index];
+         } 
+            
+        } else {
+            
+            $generatedPassword .= substr(str_shuffle($availableCharacters), 0, $length);
+            
         }
     }
     return $generatedPassword;
 }
 
 
-/* if (isset($length) && $repeat == '1') {
-        $generatedPassword = substr(str_shuffle($characters), 0, $length);
-
-    } elseif (isset($length)){
-        
-        for ($i=0; $i < $length; $i++) { 
-            $index = rand(0, strlen($characters) - 1);
-            $generatedPassword .= $characters[$index];
-        }
-    }*/
 var_dump($_GET['passwordLength']);
 var_dump($_GET['repeatCharacter']);
 
 
+if (isset($_GET['passwordLength'])){
 
-echo generatePassword($_GET['passwordLength']);
+    echo generatePassword($_GET['passwordLength']);
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +100,7 @@ echo generatePassword($_GET['passwordLength']);
 
                 <form action="" method="GET" class="col d-flex flex-column">
                     <div class="d-flex justify-content-around">
-                        <input type="text" name="passwordLength" id="passwordLength">
+                        <input type="number" name="passwordLength" id="passwordLength">
                     </div>
                     <div class="m-auto">
                         <div class="form-check">
