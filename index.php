@@ -10,63 +10,19 @@
 */
 
 
-function generatePassword($length)
-{
-    $repeat = $_GET['repeatCharacter'];
-    $addLetters = $_GET['letters'];
-    $addNumbers = $_GET['numbers'];
-    $addSpecial = $_GET['special'];
-    $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $numbers = '0123456789';
-    $specials = '!$%&/()=@#+';
-    $availableCharacters = '';
-    $generatedPassword = '';
-    
-
-    if ($addLetters){
-        $availableCharacters .= $letters;
-    }
-    if ($addNumbers){
-        $availableCharacters .= $numbers;
-    }
-    if ($addSpecial){
-        $availableCharacters .= $specials;
-    }
+include './functions.php';
 
 
 
 
 
+if (isset($_GET['passwordLength'])) {
 
-
-    if (!empty($availableCharacters)) {
-
-        if ($repeat) {
-
-            for ($i = 0; $i < $length; $i++) {
-             $index = rand(0, strlen($availableCharacters) - 1);
-             $generatedPassword .= $availableCharacters[$index];
-         } 
-            
-        } else {
-            
-            $generatedPassword .= substr(str_shuffle($availableCharacters), 0, $length);
-            
-        }
-    }
-    return $generatedPassword;
+    $password = generatePassword($_GET['passwordLength']);
 }
 
-
-var_dump($_GET['passwordLength']);
-var_dump($_GET['repeatCharacter']);
-
-
-if (isset($_GET['passwordLength'])){
-
-    echo generatePassword($_GET['passwordLength']);
-
-}
+$password = '';
+var_dump($password);
 ?>
 
 <!DOCTYPE html>
@@ -87,7 +43,11 @@ if (isset($_GET['passwordLength'])){
         <h2 class="text-white text-center">Genera un password sicura</h2>
 
         <div class="alert alert-primary" role="alert">
-            Nessun parametro valido inserito
+            <?php if ($password !== '') : ?>
+                La tua password è <?php echo $password ?>
+            <?php else : ?>
+                La tua password non è stata generata, verifica di aver inserito una lunghezza nell'input
+            <?php endif ?>
         </div>
         <div class="row row-cols-2 bg-light p-5">
             <div class="col d-flex flex-column">
