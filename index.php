@@ -1,10 +1,45 @@
 <?php
 
+function generatePassword($length)
+{
+    $length = $_GET['passwordLength'];
+    $repeat = $_GET['repeatCharacter'];
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $numbers = '0123456789';
+    $specials = '!£$%&/()=@#+';
+    $generatedPassword = '';
+
+    if (isset($length) && $repeat == '1') {
+
+        $generatedPassword = substr(str_shuffle($characters), 0, $length);
+
+    } elseif (isset($length)) {
+
+        for ($i = 0; $i < $length; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $generatedPassword .= $characters[$index];
+        }
+    }
+    return $generatedPassword;
+}
+
+
+/* if (isset($length) && $repeat == '1') {
+        $generatedPassword = substr(str_shuffle($characters), 0, $length);
+
+    } elseif (isset($length)){
+        
+        for ($i=0; $i < $length; $i++) { 
+            $index = rand(0, strlen($characters) - 1);
+            $generatedPassword .= $characters[$index];
+        }
+    }*/
+var_dump($_GET['passwordLength']);
+var_dump($_GET['repeatCharacter']);
 
 
 
-
-
+echo generatePassword($_GET['passwordLength']);
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +53,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
-<body class="bg-dark">
+<body class="bg-success">
 
     <div class="container">
         <h1 class="text-secondary text-center">Strong Password Generator</h1>
@@ -48,14 +83,14 @@
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="dontRepeatCharacter" id="dontRepeatCharacter" value="0" checked>
-                            <label class="form-check-label" for="dontRepeatCharacter">
+                            <input class="form-check-input" type="radio" name="repeatCharacter" id="repeatCharacter" value="0" checked>
+                            <label class="form-check-label" for="repeatCharacter">
                                 No
                             </label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="letters" name="letters">
+                            <input class="form-check-input" type="checkbox" value="1" id="letters" name="letters" checked>
                             <label class="form-check-label" for="letters">
                                 Lettere
                             </label>
@@ -74,11 +109,11 @@
                         </div>
                     </div>
                     <div class="m-auto pt-5">
-                      <button type="submit" class="btn btn-primary">Invia</button>
-                    <button type="reset" class="btn btn-secondary">Annulla</button>
-  
+                        <button type="submit" class="btn btn-primary">Invia</button>
+                        <button type="reset" class="btn btn-secondary">Annulla</button>
+
                     </div>
-                    
+
 
 
 
